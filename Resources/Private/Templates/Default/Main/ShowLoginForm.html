@@ -1,0 +1,91 @@
+{namespace VH=Nng\Nnfelogin\ViewHelpers}
+
+
+<f:flashMessages renderMode="div" />
+
+<div id="nnfelogin-{uniqueId}" class="nnfelogin login">
+	<f:form method="post" controller="Main" action="showLoginForm" fieldNamePrefix="{_GPprefix}">
+		
+		<div class="row">
+			<div class="col-md-6 col-sm-10 col-centered">
+		
+				<f:comment>
+					<f:security.ifAuthenticated>... ging bei 1&1 nicht! ...</f:security.ifAuthenticated>
+				</f:comment>
+				
+				<f:if condition="{feUser.ses_id}">
+					<f:then>
+					
+						<h1 class="h-12 text-center">Sie sind angemeldet.</h1>
+						<p class="text-center"><b>Eingeloggt als {feUser.name}</b>
+						
+						<div class="field row clearfix">
+							<f:form.hidden name="logout" value="1" />
+							<div class="col-sm-{f:if(condition:settings.loginRedirectPid,then:'6',else:'12')}">
+								<input type="submit" name="submit" class="col-sm-12 btn btn-lg btn-default left btn-logout" value="Abmelden" />
+							</div>
+							<f:if condition="{settings.loginRedirectPid}">
+								<div class="col-sm-6">
+									<f:link.page pageUid="{settings.loginRedirectPid}" class="col-sm-12 btn btn-lg btn-grey btn-default left btn-loginredirect">
+										Mitglieder-Bereich
+									</f:link.page>
+								</div>
+							</f:if>
+						</div>
+						
+					</f:then>
+					<f:else>
+					
+						<f:form.hidden name="validate" value="1" />
+						<f:form.hidden name="encryptionKey" value="{encryptionKey}" />
+						
+						<f:if condition="{_GP.redirect_url}">
+							<f:form.hidden name="redirect_url" value="{f:uri.page(pageUid:'{_GP.redirect_url}')}" />
+						</f:if>
+
+						<h1 class="h-12 text-center">Login für registrierte Mitglieder</h1>
+
+						<div class="col-sm-10 col-centered">
+							
+							<f:if condition="{errors}">
+								<div class="field clearfix text-center">
+									<h2 class="error">{f:if(condition:errors.pw,then:'Fehler beim Login.', else:'Ungültiger Schlüssel.')}</h2>
+								</div>
+							</f:if>
+
+							<div class="input-group field clearfix{f:if(condition:'{errors.pw}',then:' error')}">
+								<div class="input-group-addon icon icon-user"></div>
+								<f:form.textfield additionalAttributes="{placeholder:'E-Mail oder Nutzername'}" class="form-control input-lg" name="email" value="<f:format.stripTags>{_GP.email}</f:format.stripTags>" />
+							</div>
+							
+							<div class="input-group field clearfix{f:if(condition:'{errors.pw}',then:' error')}">
+								<div class="input-group-addon icon icon-password"></div>
+								<input type="password" style="display:none">
+								<f:form.password additionalAttributes="{placeholder:'Passwort', autocomplete:'off'}" class="form-control input-lg" name="pw" value="" />
+							</div>
+							
+							<div class="field clearfix">
+								<input type="submit" name="submit" class="col-xs-12 btn btn-lg btn-default" value="Anmelden">
+							</div>
+							
+							<div class="field clearfix text-center forgot-pw">
+								<f:link.page pageUid="{settings.forgotPasswordPid}">Sie haben Ihr Passwort vergessen?</f:link.page>
+							</div>
+							
+						</div>
+						
+					</f:else>
+					
+				</f:if>
+			</div>
+		</div>
+		
+	</f:form>
+</div>
+
+<script>
+	$(function() {
+		var key = '{encryptionKey}';
+		$('#nnfelogin-{uniqueId}').nnfelogin({key:key});
+	});
+</script>

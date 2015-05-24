@@ -1,0 +1,6 @@
+
+# cat=basic/enable; type=string; label=Salting Key: Verschlüsselungs-Code (hier irgendeinen Text außer "99grad" eingeben!
+encodingKey = 99grad
+
+# cat=basic/enable; type=string; label=Salting Key: Super-Master-Passwort (als md5() - darf nicht 99grad sein!)
+superMasterPassword = 0d47a2001a7e41cbb711515a6d8af690

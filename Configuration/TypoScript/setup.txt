@@ -1,0 +1,155 @@
+
+## ----------------------------------------------------------------------------
+## include js
+## ----------------------------------------------------------------------------
+
+page.includeJSlibs {
+	
+}
+
+
+
+## ----------------------------------------------------------------------------
+## include css
+## ----------------------------------------------------------------------------
+
+page.includeCSS {
+	
+}
+	
+
+## ----------------------------------------------------------------------------
+## settings
+## ----------------------------------------------------------------------------
+
+plugin.tx_nnfelogin {
+	
+
+	settings {
+		storagePid = 
+		forgotPasswordPid = 17
+		
+		forgotPassword {
+			subject = Passwort zurücksetzen
+			fromEmail = david@99grad.de
+			fromName = David Bascom
+			returnPid = 8
+		}
+	}
+
+	
+	# Templates (Views) können hier definiert werden und sind dann als Dropdown im Flexform verfügbar
+	predef {
+		
+		default {
+		
+			label = Große Buttons (adhok)
+			template = typo3conf/ext/nnfelogin/Resources/Private/Templates/Default/
+			
+			partials {
+				1 = typo3conf/ext/nnfelogin/Resources/Private/Templates/Default/Partials/
+				2 = typo3conf/ext/nnfelogin/Resources/Private/Templates/Partials/
+				3 = typo3conf/ext/eswe_api/Resources/Private/Templates/Mail/Partials/
+			}
+			
+			includeCSS.1 = typo3conf/ext/nnfelogin/Resources/Public/Css/nnfelogin.css
+			includeJS.1 = typo3conf/ext/nnfelogin/Resources/Public/Scripts/jquery.nnfelogin.js
+			
+		}
+		
+		compact {
+		
+			label = Login-Box, kompakt (adhok)
+			template = typo3conf/ext/nnfelogin/Resources/Private/Templates/Compact/
+			
+			partials {
+				1 = typo3conf/ext/nnfelogin/Resources/Private/Templates/Compact/Partials/
+				2 = typo3conf/ext/nnfelogin/Resources/Private/Templates/Partials/
+				3 = typo3conf/ext/eswe_api/Resources/Private/Templates/Mail/Partials/
+			}
+			
+			#includeCSS.1 = typo3conf/ext/nnfelogin/Resources/Public/Css/nnfelogin_compact.css
+			#includeJS.1 = typo3conf/ext/nnfelogin/Resources/Public/Scripts/jquery.nnfelogin.js
+			
+		}
+		
+		status < .default
+		status {
+			label = Status-Zeile
+			template = typo3conf/ext/nnfelogin/Resources/Private/Templates/Status/
+		}
+		
+	}
+	
+	prefdefStyles {
+		
+	}
+	
+	persistence {
+		storagePid =
+	}
+	
+	mvc {
+		callDefaultActionIfActionCantBeResolved = 1
+	}
+	
+	_CSS_DEFAULT_STYLE >
+	
+}
+
+
+config.tx_extbase{
+    persistence{
+        classes{
+
+            TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
+                subclasses {
+                    Tx_Nnfelogin_FrontendUser = Nng\Nnfelogin\Domain\Model\FrontendUser
+          		}
+            }
+          
+            Nng\Nnfelogin\Domain\Model\FrontendUser {
+                mapping {
+                    tableName = fe_users
+                }
+            }
+            
+    	}
+    }
+}
+
+
+## ----------------------------------------------------------------------------
+## ... und ein Plugin für alle Seiten bereitstellen
+## ----------------------------------------------------------------------------
+
+lib.nnfelogin_status = USER
+lib.nnfelogin_status {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = Nnfelogin
+   	pluginName = Pi1
+    vendorName = Nng
+    controller = Main
+    action = showLoginForm
+    switchableControllerActions {
+        Main {
+        	1 = showLoginForm
+        }
+    }
+    view < plugin.tx_nnfelogin.view
+    persistence < plugin.tx_nnfelogin.persistence
+    settings < plugin.tx_nnfelogin.settings
+    
+    settings.flexform {
+    	predefTemplate = status
+    	loginFormPid = 8
+    }
+}
+
+
+##page.1000 < lib.nnfelogin_status
+
+
+
+
+

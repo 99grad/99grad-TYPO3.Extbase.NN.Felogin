@@ -1,0 +1,88 @@
+
+.forgotpw-form {
+	padding: 30px;
+}
+
+.nnfelogin .field {
+	margin: 15px 0 15px 0;
+}
+
+.nnfelogin .input-group-addon {
+	background-color: #cfcfcf;
+	border: none;
+}
+
+.nnfelogin .forgot-pw a {
+	text-decoration: underline;
+}
+
+.nnfelogin .input-lg {
+	height: 40px;
+	border-radius: 0 5px 5px 0;
+	font-size: 1.6rem;
+	color: #555;
+}
+
+.nnfelogin .btn-lg {
+	height: 55px;
+	font-size: 2.2rem;
+}
+
+.nnfelogin a.btn-lg {
+	padding-top: 13px;
+}
+
+.nnfelogin .icon:before {
+	background-size: contain;
+	width: 35px; height: 28px;
+	padding: 12px;
+	opacity: 0.35;
+	-moz-opacity: 0.35;
+	-webkit-opacity: 0.35;
+}
+
+
+.nnfelogin .icon-mail:before {
+	background-image: url(../Imgs/mail.svg);
+}
+
+.nnfelogin .icon-user:before {
+	background-image: url(../Imgs/user.svg);
+}
+
+.nnfelogin .icon-password:before {
+	background-image: url(../Imgs/password.svg);
+}
+
+.nnfelogin .input-group {
+	width: 100%;
+}
+
+.nnfelogin input:focus:-webkit-autofill,
+.nnfelogin input:-webkit-autofill {
+	background-color: #555 !important;
+    -webkit-box-shadow: 0 0 0px 1000px #efefef inset;
+    -webkit-text-fill-color: #555 !important;
+}
+
+.nnfelogin .form-control,
+.nnfelogin .input-lg:focus {
+	background-color: #f5f5f5 !important;
+	outline: 0 none;
+	border: 1px solid #ddd;
+  	box-shadow: none;
+}
+
+
+.nnfelogin .error .form-control,
+.nnfelogin .error input:focus:-webkit-autofill,
+.nnfelogin .error input:-webkit-autofill,
+.nnfelogin .error input.input-lg,
+.nnfelogin .error input[type="text"] {
+	background-color: #f5e1e1 !important;
+	-webkit-text-fill-color: #555 !important;
+}
+
+.nnfelogin .input-group-addon .glyphicon {
+	font-size: 1.7rem;
+}

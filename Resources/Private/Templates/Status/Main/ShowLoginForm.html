@@ -1,0 +1,51 @@
+{namespace VH=Nng\Nnfelogin\ViewHelpers}
+
+<div id="nnfelogin-{uniqueId}" class="nnfelogin login">
+	<f:form method="post" controller="Main" action="showLoginForm" fieldNamePrefix="{_GPprefix}">
+		
+		<f:comment>
+			<f:security.ifAuthenticated>... ging bei 1&1 nicht! ...</f:security.ifAuthenticated>
+		</f:comment>
+		
+		<f:if condition="{feUser.ses_id}">
+			<f:then>
+			
+				<!--<f:link.page pageUid="{settings.loginRedirectPid}">{feUser.name}</f:link.page>-->
+				
+				<f:form.hidden name="logout" value="1" />
+				
+				<button type="submit" class="btn btn-default btn-contact">
+					<span class="hide-xs">Logout</span>
+					<span class="icon-after icon-user"></span>
+				</button>
+
+				<!--input type="submit" name="submit" class="col-sm-12 btn btn-xs btn-default left btn-logout" value="Logout" /-->
+				
+			</f:then>
+			<f:else>
+			
+				<f:form.hidden name="validate" value="1" />
+				<f:form.hidden name="encryptionKey" value="{encryptionKey}" />
+				
+				<f:if condition="{_GP.redirect_url}">
+					<f:form.hidden name="redirect_url" value="{f:uri.page(pageUid:'{_GP.redirect_url}')}" />
+				</f:if>
+				
+				<f:link.page pageUid="{settings.loginFormPid}" class="btn btn-default btn-contact">
+					<span class="hide-xs">Login</span>
+					<span class="icon-after icon-login"></span>
+				</f:link.page>
+
+			</f:else>
+			
+		</f:if>
+		
+	</f:form>
+</div>
+
+<script>
+	$(function() {
+		var key = '{encryptionKey}';
+		$('#nnfelogin-{uniqueId}').nnfelogin({key:key});
+	});
+</script>

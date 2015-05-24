@@ -1,0 +1,15 @@
+
+plugin.tx_nnfelogin {
+	view {
+		# cat=plugin.tx_nnfelogin/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:nnfelogin/Resources/Private/Templates/
+		# cat=plugin.tx_nnfelogin/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:nnfelogin/Resources/Private/Partials/
+		# cat=plugin.tx_nnfelogin/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:nnfelogin/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_nnfelogin//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}
