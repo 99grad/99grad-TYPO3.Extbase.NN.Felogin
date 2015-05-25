@@ -31,8 +31,8 @@ plugin.tx_nnfelogin {
 		
 		forgotPassword {
 			subject = Passwort zurücksetzen
-			fromEmail = david@99grad.de
-			fromName = David Bascom
+			fromEmail = internet@eswe-verkehr.de
+			fromName = ESWE Verkehrsgesellschaft mbH
 			returnPid = 8
 		}
 	}
