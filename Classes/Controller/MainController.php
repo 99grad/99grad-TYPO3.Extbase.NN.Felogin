@@ -38,6 +38,15 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected $encryptionService;
 	
 	
+	/**
+	* SignalSlot Dispatcher
+	*
+	* @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	* @inject
+	*/
+	protected $signalSlotDispatcher;
+
+	
 	
 	protected $viewVars;
 	
@@ -51,6 +60,8 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected function initializeAction() {
 
 //		$GLOBALS['TSFE']->set_no_cache();
+		if (!$this->request) $this->request = $this->objectManager->get('\TYPO3\CMS\Extbase\Mvc\Request');
+		if (!$this->view) $this->view = $this->objectManager->get('\TYPO3\CMS\Fluid\View\StandaloneView');
 				
 		$this->cObj = $this->configurationManager->getContentObject();
 		$this->TS = $this->settingsUtility->getTsSetup();
@@ -83,6 +94,9 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	*/
 	protected function initializeView() {
 
+		if (!$this->request) $this->request = $this->objectManager->get('\TYPO3\CMS\Extbase\Mvc\Request');
+		if (!$this->view) $this->view = $this->objectManager->get('\TYPO3\CMS\Fluid\View\StandaloneView');
+		
 		$predefTemplate = $this->settings['predefTemplate'];
 		if (!$predefTemplate) $predefTemplate = 'default';
 		
@@ -128,7 +142,9 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function getTemplatePath () {
 		$predefTemplate = $this->settings['predefTemplate'];
 		if (!$predefTemplate) $predefTemplate = 'default';
+
 		$templateSettings = $this->TS['predef.']["{$predefTemplate}."];
+
 		return $templateSettings['template'].$this->request->getControllerName().'/';
 	}
 	
@@ -197,6 +213,45 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->view->assignMultiple( $view );
 		
 	}
+	
+	
+
+	/**
+	*  action resetPasswordDispatcher
+	*  "Passwort vergessen"-Funktion als Signal/Slot bereitstellen
+	*
+	*  $this->signalSlotDispatcher->dispatch('TYPO3\EsweApi\Domain\Service\UserService', 'emitResetPassword', array('email'=>'david@99grad.de'));
+	*
+	*  Signal
+	*  @param array $email
+	*  @return void
+	*/
+
+	public function resetPasswordDispatcher( $email ){
+		if (!trim($email)) return;
+		if (!($user = $this->frontendUserRepository->findOneByEmail( $email ))) return;
+//		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump( $user );
+
+		$this->initializeAction();
+		$this->initializeView();
+		
+		$tmplPath = 'typo3conf/ext/nnfelogin/Resources/Private/Templates/Default/Main/';
+		$linkParams = $this->frontendUserService->generateForgotPasswordParams( $user->getUid() );
+
+		$html = $this->anyHelper->renderTemplate( 
+			$tmplPath . 'EmailResetPassword.html', 
+			array_merge($this->viewVars, array('feUser'=>$user), $linkParams), 
+			true,
+			$this->pathPartials
+		);
+
+		$this->anyHelper->send_email(array_merge($this->settings['forgotPassword'], array(
+			'toEmail'	=> $user->getEmail(),
+			'html'		=> $html
+		)));
+		
+	}
+
 	
 	
 	/**

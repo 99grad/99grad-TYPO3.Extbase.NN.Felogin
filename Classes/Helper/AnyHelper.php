@@ -124,7 +124,7 @@ class AnyHelper {
 	*/
 
 
-	function send_email ( $params, $conf ) {
+	function send_email ( $params, $conf = null ) {
 
 		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_message'); // TYPO3\\CMS\\Core\\Mail\\MailMessage
 		

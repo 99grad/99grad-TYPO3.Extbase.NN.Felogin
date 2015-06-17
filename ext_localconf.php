@@ -22,3 +22,15 @@ if (!defined('TYPO3_MODE')) {
 // eID Dispatcher
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['nnfelogin'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('nnfelogin').'Classes/Dispatcher/EidDispatcher.php';
+
+
+// Slot Registrierungen
+$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
+$signalSlotDispatcher->connect(
+	'TYPO3\EsweApi\Domain\Service\UserService', 
+	'emitResetPassword', 
+	'Nng\Nnfelogin\Controller\MainController', 
+	'resetPasswordDispatcher'
+);
+
+
