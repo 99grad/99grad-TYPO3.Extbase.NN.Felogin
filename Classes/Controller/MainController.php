@@ -228,6 +228,11 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	*/
 
 	public function resetPasswordDispatcher( $email ){
+
+        /** @var $logger \TYPO3\CMS\Core\Log\Logger */
+        $logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger(__CLASS__);
+        $logger->info('NNFeLogin MainController:resetPasswordDispatcher', array('email' => json_encode($email) ));
+
 		if (!trim($email)) return;
 		if (!($user = $this->frontendUserRepository->findOneByEmail( $email ))) return;
 //		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump( $user );
