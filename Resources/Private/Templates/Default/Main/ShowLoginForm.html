@@ -49,7 +49,15 @@
 							
 							<f:if condition="{errors}">
 								<div class="field clearfix text-center">
-									<h2 class="error">{f:if(condition:errors.pw,then:'Fehler beim Login.', else:'Ungültiger Schlüssel.')}</h2>
+									<f:if condition="{errors.errorCode} == '-1'">
+										<h2 class="error">Benutzer konnte nicht eindeutig zugeordnet werden. Versuchen Sie es alternativ mit Ihrer E-Mail, Kunden-Nummer oder Ihrem Benutzernamen.</h2>
+									</f:if>
+									<f:if condition="{errors.encryptionKey}">
+										<h2 class="error">Ungültiger Schlüssel. Bitte versuchen Sie es noch einmal.</h2>
+									</f:if>
+									<f:if condition="{errors.pw}">
+										<h2 class="error">Username oder Passwort nicht gültig.</h2>
+									</f:if>
 								</div>
 							</f:if>
 

@@ -126,7 +126,7 @@ class AnyHelper {
 
 	function send_email ( $params, $conf = null ) {
 
-		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_message'); // TYPO3\\CMS\\Core\\Mail\\MailMessage
+		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Mail\MailMessage');
 		
 		$mail->setFrom(array( $params['fromEmail'] => $params['fromName'] ));
 		
@@ -154,7 +154,7 @@ class AnyHelper {
 					\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL').$img,
 					$img
 				), $cid, $html);
-	}
+		}
 	
 		if ($html) {
 			$mail->setBody($html, 'text/html');

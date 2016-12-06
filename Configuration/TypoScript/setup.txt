@@ -27,14 +27,19 @@ plugin.tx_nnfelogin {
 
 	settings {
 		storagePid = 
-		forgotPasswordPid = 17
+		
+		forgotPasswordPid = 117
 		
 		forgotPassword {
 			subject = Passwort zurücksetzen
-			fromEmail = internet@eswe-verkehr.de
-			fromName = ESWE Verkehrsgesellschaft mbH
+			fromEmail = info@dgim.de
+			fromName = DGIM
 			returnPid = 8
 		}
+		
+		# Diese Felder werden als alternative User-Name verwendet
+		usernameFields = username, email, member_uid
+		
 	}
 
 	
@@ -49,7 +54,8 @@ plugin.tx_nnfelogin {
 			partials {
 				1 = typo3conf/ext/nnfelogin/Resources/Private/Templates/Default/Partials/
 				2 = typo3conf/ext/nnfelogin/Resources/Private/Templates/Partials/
-				3 = typo3conf/ext/eswe_api/Resources/Private/Templates/Mail/Partials/
+				3 = typo3conf/ext/nnfelogin/Resources/Private/Partials/
+				4 = typo3conf/ext/eswe_api/Resources/Private/Templates/Mail/Partials/
 			}
 			
 			includeCSS.1 = typo3conf/ext/nnfelogin/Resources/Public/Css/nnfelogin.css

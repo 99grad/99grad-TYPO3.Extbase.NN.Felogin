@@ -28,16 +28,23 @@ class FrontendUserService implements \TYPO3\CMS\Core\SingletonInterface{
 	*/
 	protected $frontendUserRepository;
 	
+	/**
+	* @var \Nng\Nnfelogin\Utilities\SettingsUtility
+	* @inject
+	*/
+	protected $settingsUtility;
+	
 	
 	/**
-	* __construct
+	* initializeObject
 	*
 	* @return void
 	*/
-	public function __construct(){}
+	public function initializeObject () {
+		$this->settings = $this->settingsUtility->getMergedSettings();
+	}
 	
 
-	
 	/**
 	* action getCurrentUser
 	* Gibt aktuellen fe_user zurück
@@ -62,10 +69,14 @@ class FrontendUserService implements \TYPO3\CMS\Core\SingletonInterface{
 	
 		if (!$email || !$password) return self::INVALID_PARAMETERS;
 		
-		$user = $this->frontendUserRepository->findByEmail( $email );
+		$usernameFields = $this->settings['usernameFields'];
 		
-		if (!count($user)) $user = $this->frontendUserRepository->findByUsername( $email );
+		$user = $this->frontendUserRepository->findByCustomField( $email, $usernameFields );
+		
+		// Kein Benutzer unter angegebenen Kriterien
 		if (!count($user)) return self::USER_NOT_FOUND;
+		
+		// Mehr als 1 Benutzer: Keine eindeutige Zuordnung möglich
 		if (count($user) > 1) return self::USER_NOT_UNIQUE;
 
 		$user = $user->getFirst();
@@ -126,25 +137,39 @@ class FrontendUserService implements \TYPO3\CMS\Core\SingletonInterface{
 	*/
 	
 	public function startFeUserSession ( $user ) {
-	
+
 		if (!$user) return;
-		// http://stackoverflow.com/questions/7695830/setting-a-fe-users-session-from-extbase
 		
 		$uid = $user->getUid();
-		
-		$fe_user = &$GLOBALS['TSFE']->fe_user;
-		$fe_user->user = $fe_user->getRawUserByUid($uid);
-		
-		$GLOBALS['TSFE']->loginUser = 1;
-		$fe_user->fetchGroupData();
-		$fe_user->start();
-		$fe_user->createUserSession(array('uid' => $uid));
-		$fe_user->loginSessionStarted = true;
-		
-		$fe_user->setKey('ses', 'recs', array('loggedIn'=>1));
-		$fe_user->storeSessionData();
 
+		// ToDo: Remove when 6.2 is over		
+		if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 7000000) {
+			$fe_user = &$GLOBALS['TSFE']->fe_user;
+			$fe_user->user = $fe_user->getRawUserByUid($uid);
+				
+			$GLOBALS['TSFE']->loginUser = 1;
+			$fe_user->fetchGroupData();
+			$fe_user->start();
+			$fe_user->createUserSession(array('uid' => $uid));
+			$fe_user->loginSessionStarted = true;
+		
+			$fe_user->setKey('ses', 'recs', array('loggedIn'=>1));
+			$fe_user->storeSessionData();
+		} else {	
+			if ($frontendUser = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'fe_users', 'uid =' . $uid)) {
+				$frontendController = $GLOBALS['TSFE'];
+				$frontendController->loginUser = 1;
+				$frontendController->fe_user->createUserSession($frontendUser);
+				$frontendController->fe_user->user = $GLOBALS['TSFE']->fe_user->fetchUserSession();
+				$frontendController->initUserGroups();
+				$frontendController->fe_user->setAndSaveSessionData('dummy', TRUE);
+			} else {
+				return;
+			}
+		}
+		
 		// Hooks aufrufen
+		// ToDo: Replace with Signal/Slot when deprecated
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed']) {
 			$_params = array();
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed'] as $_funcRef) {
@@ -167,6 +192,7 @@ class FrontendUserService implements \TYPO3\CMS\Core\SingletonInterface{
 		$GLOBALS['TSFE']->fe_user->logoff();
 		
 		// Hooks aufrufen
+		// ToDo: Replace with Signal/Slot when deprecated
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']) {
 			$_params = array();
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed'] as $_funcRef) {
