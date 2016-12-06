@@ -7,6 +7,7 @@ class FrontendUserService implements \TYPO3\CMS\Core\SingletonInterface{
 		
 	const USER_NOT_UNIQUE 		= -1;
 	const USER_NOT_FOUND 		= -3;
+	const NO_USER_GROUP 		= -6;
 	const INVALID_PARAMETERS 	= -2;
 	const WRONG_PASSWORD 		= -5;
 	
@@ -167,7 +168,7 @@ class FrontendUserService implements \TYPO3\CMS\Core\SingletonInterface{
 				return;
 			}
 		}
-		
+				
 		// Hooks aufrufen
 		// ToDo: Replace with Signal/Slot when deprecated
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed']) {

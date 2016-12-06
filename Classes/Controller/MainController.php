@@ -184,8 +184,15 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$user = $this->frontendUserService->validate( $_GP['email'], $_GP['pw'] );
 				
 				if (is_object($user)) {
-					$this->frontendUserService->startFeUserSession( $user );
-					$this->anyHelper->httpRedirect( null, array('loginSuccess'=>1, 'redirect_url'=>$this->_GP['redirect_url'] ), $this->_GPprefix );
+//					\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($user);
+					
+					if (!count($user->getUsergroup())) {
+						$view['errors'] = array('noGroup'=>1);
+					} else {
+						$this->frontendUserService->startFeUserSession( $user );
+						$this->anyHelper->httpRedirect( null, array('loginSuccess'=>1, 'redirect_url'=>$this->_GP['redirect_url'] ), $this->_GPprefix );
+					}
+					
 				} else {
 					
 					$view['errors'] = array('pw'=>1, 'errorCode'=>$user);
