@@ -39,8 +39,8 @@ class AnyHelper {
 	 */
 	 
 	function piBaseObj () {
-		$piObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Frontend\Plugin\AbstractPlugin');
-		$piObj->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+		$piObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Plugin\AbstractPlugin');
+		$piObj->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 		return $piObj;
 		/*
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
@@ -226,7 +226,7 @@ class AnyHelper {
 			$template = '{namespace VH=Nng\Nnfelogin\ViewHelpers}'.$template;
 		}
 		
-		$view = $this->objectManager->get('\TYPO3\CMS\Fluid\View\StandaloneView');		
+		$view = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');		
 		$view->setTemplateSource($template);
 		$view->setPartialRootPaths( $pathPartials ? array($pathPartials) : $this->generateFallbackPathsForPartials($path) );
 		$view->assignMultiple( $vars );
@@ -248,17 +248,17 @@ class AnyHelper {
 	
 	function addFlashMessage ( $title = '', $text = '', $type = 'OK') {
 		
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
-		$controllerContext = $objectManager->create('\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$controllerContext = $objectManager->get('TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext');
 		$controllerContext->getFlashMessageQueue()->enqueue(
-			$objectManager->get( '\TYPO3\CMS\Core\Messaging\FlashMessage', $text, $title, constant('\TYPO3\CMS\Core\Messaging\FlashMessage::'.$type), true )
+			$objectManager->get( 'TYPO3\CMS\Core\Messaging\FlashMessage', $text, $title, constant('TYPO3\CMS\Core\Messaging\FlashMessage::'.$type), true )
 		);
 	}
 	
 	function renderFlashMessages () {
 		
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
-		$controllerContext = $objectManager->create('\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$controllerContext = $objectManager->get('TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext');
 		if (count($controllerContext->getFlashMessageQueue()->getAllMessages())) {
 			return $this->renderTemplate('typo3conf/ext/nnfelogin/Resources/Private/Templates/FlashMessages.html', array() );
 		}

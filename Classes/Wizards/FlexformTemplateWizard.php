@@ -17,8 +17,8 @@ class FlexformTemplateWizard {
 	
 	
 	function __construct () {
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
-		$this->settingsUtility = $this->objectManager->get("\Nng\Nnfelogin\Utilities\SettingsUtility");
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$this->settingsUtility = $this->objectManager->get("Nng\Nnfelogin\Utilities\SettingsUtility");
 	}
 	
 	

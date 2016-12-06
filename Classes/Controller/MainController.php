@@ -60,8 +60,8 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected function initializeAction() {
 
 //		$GLOBALS['TSFE']->set_no_cache();
-		if (!$this->request) $this->request = $this->objectManager->get('\TYPO3\CMS\Extbase\Mvc\Request');
-		if (!$this->view) $this->view = $this->objectManager->get('\TYPO3\CMS\Fluid\View\StandaloneView');
+		if (!$this->request) $this->request = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Request');
+		if (!$this->view) $this->view = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
 				
 		$this->cObj = $this->configurationManager->getContentObject();
 		$this->TS = $this->settingsUtility->getTsSetup();
@@ -94,8 +94,8 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	*/
 	protected function initializeView() {
 
-		if (!$this->request) $this->request = $this->objectManager->get('\TYPO3\CMS\Extbase\Mvc\Request');
-		if (!$this->view) $this->view = $this->objectManager->get('\TYPO3\CMS\Fluid\View\StandaloneView');
+		if (!$this->request) $this->request = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Request');
+		if (!$this->view) $this->view = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
 		
 		$predefTemplate = $this->settings['predefTemplate'];
 		if (!$predefTemplate) $predefTemplate = 'default';

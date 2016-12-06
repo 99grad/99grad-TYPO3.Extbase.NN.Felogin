@@ -14,9 +14,9 @@ class CacheUtility extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 	
 	public function __construct () {
 	
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
-		$this->configurationManager = $objectManager->get('\TYPO3\CMS\Extbase\Configuration\ConfigurationManager');
-		$this->request = $objectManager->get('\TYPO3\CMS\Extbase\Mvc\Request');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$this->configurationManager = $objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManager');
+		$this->request = $objectManager->get('TYPO3\CMS\Extbase\Mvc\Request');
 		
 		$this->cObj = $this->configurationManager->getContentObject();
 		$this->configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);

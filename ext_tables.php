@@ -17,5 +17,5 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignat
 
 
 if (TYPO3_MODE == 'BE')	{
-	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['\Nng\Nnfelogin\Wizicons\AddContentElementWizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Classes/Wizicons/AddContentElementWizicon.php';
+	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['Nng\Nnfelogin\Wizicons\AddContentElementWizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Classes/Wizicons/AddContentElementWizicon.php';
 }

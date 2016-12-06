@@ -29,9 +29,9 @@ class SettingsUtility extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	
 	public function initializeObject () {
 	
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
-		$this->configurationManager = $objectManager->get('\TYPO3\CMS\Extbase\Configuration\ConfigurationManager');
-		$this->request = $objectManager->get('\TYPO3\CMS\Extbase\Mvc\Request');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$this->configurationManager = $objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManager');
+		$this->request = $objectManager->get('TYPO3\CMS\Extbase\Mvc\Request');
 		
 		$this->cObj = $this->configurationManager->getContentObject();
 		$this->configuration = $this->configurationManager->getConfiguration( \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK );
@@ -121,9 +121,9 @@ class SettingsUtility extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if (!$pageUid) $pageUid = (int) $GLOBALS['TSFE']->id;
 		if (!$pageUid) $pageUid = (int) $_GET['id'];
 
-		$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageSelect');
+		$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
 		$rootLine = $sysPageObj->getRootLine($pageUid);
-		$TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_tsparser_ext');
+		$TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\ExtendedTemplateService');
 		$TSObj->tt_track = 0;
 		$TSObj->init();
 		$TSObj->runThroughTemplates($rootLine);

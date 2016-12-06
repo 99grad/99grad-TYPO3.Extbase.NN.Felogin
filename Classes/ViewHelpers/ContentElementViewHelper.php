@@ -28,7 +28,7 @@ class ContentElementViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
      
     public function render($uid, $data = null) {
     
-    	$this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
+    	$this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
     	
     	if (!is_numeric($uid)) {
 			$uidArr = $this->anyHelper->getContentElementByFluidUid( $uid );
