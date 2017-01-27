@@ -58,7 +58,7 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	* @return void
 	*/
 	protected function initializeAction() {
-
+		
 //		$GLOBALS['TSFE']->set_no_cache();
 		if (!$this->request) $this->request = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Request');
 		if (!$this->view) $this->view = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
@@ -184,10 +184,18 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$user = $this->frontendUserService->validate( $_GP['email'], $_GP['pw'] );
 				
 				if (is_object($user)) {
-					$this->frontendUserService->startFeUserSession( $user );
-					$this->anyHelper->httpRedirect( null, array('loginSuccess'=>1, 'redirect_url'=>$this->_GP['redirect_url'] ), $this->_GPprefix );
+//					\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($user);
+					
+					if (!count($user->getUsergroup())) {
+						$view['errors'] = array('noGroup'=>1);
+					} else {
+						$this->frontendUserService->startFeUserSession( $user );
+						$this->anyHelper->httpRedirect( null, array('loginSuccess'=>1, 'redirect_url'=>$this->_GP['redirect_url'] ), $this->_GPprefix );
+					}
+					
 				} else {
-					$view['errors'] = array('pw'=>1);
+					
+					$view['errors'] = array('pw'=>1, 'errorCode'=>$user);
 					$view['user'] = array(
 						'pw'	=> '', 
 						'email'	=> substr(strip_tags($_GP['email']), 0, 60)
@@ -274,16 +282,26 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$view['mode'] = 'form';
 		$tmplPath = $this->getTemplatePath();
 		
-		// Benutzer hat E-Mail eingegeben um Passwort zu ändern
+		// Benutzer hat E-Mail (oder Kunden-Nummer / User-Name) eingegeben um Passwort zu ändern
 		if ($_GP['validate']) {
 
-			$user = $this->frontendUserRepository->findOneByEmail( $_GP['email'] );
+			$user = $this->frontendUserRepository->findByCustomField( $_GP['email'], $this->settings['usernameFields'] );
 //			\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump( $user );
 
 			if (!is_object($user)) {
+
+				// Keinerlei Benutzer gefunden
 				$view['errors']['email'] = 1;
+
+			} else if (count($user) > 1) {
+				// Benutzer konnte nicht eindeutig identifiziert werden, z.B. weil die E-Mail doppelt verwendet wurde
+				$view['errors']['not_unique'] = 1;
+							
 			} else {
+			
+				// Alles klar – jetzt Mail versenden
 				$view['mode'] = 'mailsent';
+				$user = $user->getFirst();
 				$linkParams = $this->frontendUserService->generateForgotPasswordParams( $user->getUid() );
 				
 				$html = $this->anyHelper->renderTemplate( 
@@ -293,7 +311,6 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					$this->pathPartials
 				);
 				
-
 
 				$this->anyHelper->send_email(array_merge($this->settings['forgotPassword'], array(
 					'toEmail'	=> $user->getEmail(),
