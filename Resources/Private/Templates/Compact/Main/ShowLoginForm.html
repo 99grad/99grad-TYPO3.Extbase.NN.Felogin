@@ -67,10 +67,10 @@
 									</f:if>
 
 									<div class="form-group row clearfix">
-										<div class="col-sm-6 gutter-sm-right-5 pad-sm-bottom-10">
+										<div class="col-sm-6">
 											<f:form.textfield additionalAttributes="{placeholder:'E-Mail oder Nutzername'}" class="form-control" name="email" value="<f:format.stripTags>{_GP.email}</f:format.stripTags>" />
 										</div>
-										<div class="col-sm-6 gutter-sm-left-5">
+										<div class="col-sm-6">
 											<input type="password" style="display:none">
 											<f:form.password additionalAttributes="{autocomplete:'off', placeholder:'Passwort'}" class="form-control" name="pw" value="" />
 										</div>
@@ -79,7 +79,7 @@
 									
 								
 									<div class="form-group no-margin-bottom">
-										<input type="submit" name="submit" class="col-sm-12 form-control" value="Login">
+										<input type="submit" name="submit" class="col-sm-3 pull-right btn btn-primary" value="Login">
 									</div>
 
 								</form>

@@ -28,6 +28,12 @@ class FrontendUserService implements \TYPO3\CMS\Core\SingletonInterface{
 	*/
 	protected $frontendUserRepository;
 	
+	/**
+	* @var \Nng\Nnfelogin\Utilities\SettingsUtility
+	* @inject
+	*/
+	protected $settingsUtility;
+	
 	
 	/**
 	* __construct
