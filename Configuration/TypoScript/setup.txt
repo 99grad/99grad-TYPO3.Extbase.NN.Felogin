@@ -34,7 +34,7 @@ plugin.tx_nnfelogin {
 			subject = Passwort zurücksetzen
 			fromEmail = info@dgim.de
 			fromName = DGIM
-			returnPid = 8
+			returnPid = 164
 		}
 		
 		# Diese Felder werden als alternative User-Name verwendet
