@@ -29,13 +29,20 @@
 									<div class="col-sm-{f:if(condition:settings.loginRedirectPid,then:'6',else:'12')} gutter-sm-right-5 pad-sm-bottom-10">
 										<input type="submit" name="submit" class="col-sm-12 form-control left btn-logout" value="Abmelden" />
 									</div>
-									<f:if condition="{settings.loginRedirectPid}">
-										<div class="col-sm-6 text-center gutter-sm-left-5">
-											<f:link.page pageUid="{settings.loginRedirectPid}" class="col-sm-12 form-control btn-loginredirect">
-												Interner Bereich
-											</f:link.page>
-										</div>
-									</f:if>
+									<f:comment>
+										<f:if condition="{settings.loginRedirectPid}">
+											<div class="col-sm-6 text-center gutter-sm-left-5">
+												<f:link.page pageUid="{settings.loginRedirectPid}" class="col-sm-12 form-control btn-loginredirect btn-">
+													Meine Daten
+												</f:link.page>
+											</div>
+										</f:if>
+									</f:comment>
+									<div class="col-sm-6 text-center gutter-sm-left-5">
+										<f:link.page pageUid="{settings.loginRedirectPid}" class="col-sm-12 form-control btn-loginredirect btn-primary">
+											Meine Daten
+										</f:link.page>
+									</div>
 								</div>
 							</div>
 						</div>
