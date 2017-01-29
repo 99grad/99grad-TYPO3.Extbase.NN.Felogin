@@ -210,7 +210,7 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		// ---------------------------------------------
 		// Benutzer will sich ausloggen
 		
-		if ($_GP['logout']) {
+		if ($_GP['logout'] || $_GET['logout']) {
 			$this->frontendUserService->endFeUserSession();
 			
 			if ($pid = $this->settings['logoutRedirectPid']) $this->anyHelper->httpRedirect( $pid );
