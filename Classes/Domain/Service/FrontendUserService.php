@@ -79,9 +79,9 @@ class FrontendUserService implements \TYPO3\CMS\Core\SingletonInterface{
 		
 		// Mehr als 1 Benutzer: Keine eindeutige Zuordnung möglich
 		if (count($user) > 1) return self::USER_NOT_UNIQUE;
+		if (count($user) == 0 || !$user) return self::WRONG_PASSWORD;
 
 		$user = $user->getFirst();
-		if (!$user) return self::WRONG_PASSWORD;
 	
 		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['nnfelogin']);
 		if ($extConfig['superMasterPassword'] == md5($password) && $password != '99grad') return $user;
