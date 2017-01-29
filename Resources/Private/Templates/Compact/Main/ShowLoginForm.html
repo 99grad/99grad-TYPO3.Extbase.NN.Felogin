@@ -7,7 +7,7 @@
 	<f:form method="post" controller="Main" action="showLoginForm" fieldNamePrefix="{_GPprefix}">
 		
 		<div class="row">
-			<div class="col-sm-12">
+			<div class="col-sm-12 col-lg-8">
 		
 				<f:comment>
 					<f:security.ifAuthenticated>... ging bei 1&1 nicht! ...</f:security.ifAuthenticated>
@@ -47,9 +47,16 @@
 									
 								<f:if condition="{errors}">
 									<f:then>
-										<div class="message">
-											{f:if(condition:errors.pw,then:'Fehler beim Login.', else:'Ungültiger Schlüssel.')}
-											<f:link.page pageUid="{settings.forgotPasswordPid}">Passwort vergessen?</f:link.page>
+										<div class="alert alert-danger">
+											<f:if condition="{errors.pw}">
+												<f:then>
+													Fehler beim Login. 
+													<f:link.page pageUid="{settings.forgotPasswordPid}">Passwort vergessen?</f:link.page>
+												</f:then>
+												<f:else>
+													Ungültiger Schlüssel. Probieren Sie es bitte noch einmal.
+												</f:else>
+											</f:if>
 										</div>
 									</f:then>
 									<f:else>
@@ -66,11 +73,11 @@
 										<f:form.hidden name="redirect_url" value="{f:uri.page(pageUid:'{_GP.redirect_url}')}" />
 									</f:if>
 
-									<div class="form-group row clearfix">
-										<div class="col-sm-6">
+									<div class="row clearfix">
+										<div class="col-sm-6 form-group">
 											<f:form.textfield additionalAttributes="{placeholder:'E-Mail oder Nutzername'}" class="form-control" name="email" value="<f:format.stripTags>{_GP.email}</f:format.stripTags>" />
 										</div>
-										<div class="col-sm-6">
+										<div class="col-sm-6 form-group">
 											<input type="password" style="display:none">
 											<f:form.password additionalAttributes="{autocomplete:'off', placeholder:'Passwort'}" class="form-control" name="pw" value="" />
 										</div>
@@ -79,7 +86,8 @@
 									
 								
 									<div class="form-group no-margin-bottom">
-										<input type="submit" name="submit" class="col-sm-3 pull-right btn btn-primary" value="Login">
+										<f:link.page pageUid="{settings.forgotPasswordPid}">Passwort vergessen?</f:link.page>
+										<input type="submit" name="submit" class="col-sm-3 col-xs-6 pull-right btn btn-primary" value="Login">
 									</div>
 
 								</form>

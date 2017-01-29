@@ -145,6 +145,7 @@ class AnyHelper {
 		$html = $params['html'];
 		$plaintext = $params['plaintext'] ? $params['plaintext'] : $this->html2plaintext($params['html']);
 		
+		if ($GLOBALS['email_inlineimages']) $inlineImages = array_merge($inlineImages, $GLOBALS['email_inlineimages']);
 		
 		foreach ($inlineImages as $img) {
 			$cid = $mail->embed(\Swift_Image::fromPath($img));
@@ -162,6 +163,7 @@ class AnyHelper {
 		} else {
 			$mail->setBody($plaintext, 'text/plain');
 		}
+	
 	
 		$mail->setReturnPath( $params['returnPath_email'] );
 

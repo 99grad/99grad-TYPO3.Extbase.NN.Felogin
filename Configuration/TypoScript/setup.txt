@@ -71,7 +71,9 @@ plugin.tx_nnfelogin {
 			partials {
 				1 = typo3conf/ext/nnfelogin/Resources/Private/Templates/Compact/Partials/
 				2 = typo3conf/ext/nnfelogin/Resources/Private/Templates/Partials/
-				3 = typo3conf/ext/eswe_api/Resources/Private/Templates/Mail/Partials/
+				3 = typo3conf/ext/nnfelogin/Resources/Private/Partials/
+				4 = typo3conf/ext/nnsubscribe/Resources/Private/Partials/
+				5 = typo3conf/ext/eswe_api/Resources/Private/Templates/Mail/Partials/
 			}
 			
 			#includeCSS.1 = typo3conf/ext/nnfelogin/Resources/Public/Css/nnfelogin_compact.css
