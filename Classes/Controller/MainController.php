@@ -75,9 +75,9 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->_GPvars = (array) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('nnfelogin');
 		$this->_GP = (array) $this->_GPvars[$this->uniqueId];
 
-		$this->encryptionKey = $this->encryptionService->getEncryptionKey();		
+		$this->encryptionKey = $this->encryptionService->getEncryptionKey();				
 		$this->encryptionService->decryptArray( $this->_GP, array('pw', 'new_pw', 'new_pw_repeat', 'pw_confirm') );
-
+				
 		// Besondere Variablen mit übernehmen
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
 			$this->_GP, array(
@@ -303,7 +303,13 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$view['mode'] = 'mailsent';
 				$user = $user->getFirst();
 				$linkParams = $this->frontendUserService->generateForgotPasswordParams( $user->getUid() );
-				
+
+				// Falls statt der E-Mail eine Mitglieds-Nummer übergeben wurde: Kodiert zurückgeben
+				if ($this->viewVars['_GP']['email'] != $user->getEmail()) {
+					$this->viewVars['_GP']['email'] = $this->anyHelper->encryptEmail( $user->getEmail() );
+					$this->view->assignMultiple( $this->viewVars );
+				}
+
 				$html = $this->anyHelper->renderTemplate( 
 					$tmplPath . 'EmailResetPassword.html', 
 					array_merge($this->viewVars, array('feUser'=>$user), $linkParams), 
@@ -311,7 +317,7 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					$this->pathPartials
 				);
 				
-
+				
 				$this->anyHelper->send_email(array_merge($this->settings['forgotPassword'], array(
 					'toEmail'	=> $user->getEmail(),
 					'html'		=> $html
@@ -379,7 +385,6 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$new_pw = $_GP['new_pw'];
 		$new_pw_repeat = $_GP['new_pw_repeat'];
 		
-		
 		$view = array('data' => $_GP, 'errors'=>array());
 		$view['mode'] = 'change_pwform';
 		
@@ -393,7 +398,9 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				if (strlen($new_pw) < 5) {
 					$view['errors']['pw_too_short'] = 1;
 				} else {
+					
 					$user = $this->frontendUserService->validate($user['email'] ? $user['email'] : $user['username'], $old_pw);
+					
 					if (is_object($user)) {
 			
 						$this->frontendUserService->updateUserPassword($user->getUid(), $new_pw);
@@ -402,6 +409,7 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 							$this->anyHelper->httpRedirect( $pid );
 						}
 					} else {
+						$view['errors']['type'] = $user;
 						$view['errors']['pw'] = 1;
 					}
 				}

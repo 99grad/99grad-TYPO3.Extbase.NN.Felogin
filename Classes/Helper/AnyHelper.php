@@ -38,7 +38,7 @@ class AnyHelper {
 	 *
 	 */
 	 
-	function piBaseObj () {
+	public function piBaseObj () {
 		$piObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Plugin\AbstractPlugin');
 		$piObj->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 		return $piObj;
@@ -52,7 +52,7 @@ class AnyHelper {
 	}
 	
 	
-	function setPageTitle ( $titleStr ) {
+	public function setPageTitle ( $titleStr ) {
 		$GLOBALS['TSFE']->page['title'] = $titleStr;
 		$GLOBALS['TSFE']->indexedDocTitle = $titleStr;
 	}
@@ -77,27 +77,27 @@ class AnyHelper {
 		Schlüssel erzeugen zur Validierung einer Abfrage
 	*/
 	
-	function createKeyForUid ( $uid ) {
+	public function createKeyForUid ( $uid ) {
 		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['nnfelogin']);
 		if ($extConfig['encodingKey'] == '99grad') die('<h1>nnfelogin</h1><p>Bitte aendere die "Salting Key" in der Extension-Konfiguration auf etwas anderes als "99grad" (im Extension-Manager auf die Extension klicken)</p>');
 		return substr(strrev(md5($uid.$extConfig['encodingKey'])), 0, 8);
 	}
 	
-	function validateKeyForUid ( $uid, $key ) {
+	public function validateKeyForUid ( $uid, $key ) {
 		return self::createKeyForUid( $uid ) == $key;
 	}
 	
 	/* --------------------------------------------------------------- */
 
 	
-	function trimExplode ( $del, $str ) {
+	public function trimExplode ( $del, $str ) {
 		if (!trim($str)) return array();
 		$str = explode($del, $str);
 		foreach ($str as $k=>$v) $str[$k] = trim($v);
 		return $str;
 	}
 	
-	function trimExplodeArray ( $arr ) {
+	public function trimExplodeArray ( $arr ) {
 		if (!$arr) return array();
 		if (!is_array($arr)) $arr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $arr);
 		$final = array();
@@ -124,7 +124,7 @@ class AnyHelper {
 	*/
 
 
-	function send_email ( $params, $conf = null ) {
+	public function send_email ( $params, $conf = null ) {
 
 		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Mail\MailMessage');
 		
@@ -194,7 +194,7 @@ class AnyHelper {
 		return $paths;
 	}
 	
-	function renderTemplate ( $path, $vars, $flattenVars = false, $pathPartials = null, $doubleRender = false ) {
+	public function renderTemplate ( $path, $vars, $flattenVars = false, $pathPartials = null, $doubleRender = false ) {
 		
 		if (!$path || !file_exists($path)) return '';
 
@@ -220,7 +220,7 @@ class AnyHelper {
 	}
 	
 	
-	function renderTemplateSource ( $template, $vars, $pathPartials = null ) {
+	public function renderTemplateSource ( $template, $vars, $pathPartials = null ) {
 		
 		if (!$template) return '';
 		
@@ -248,7 +248,7 @@ class AnyHelper {
 
 	*/
 	
-	function addFlashMessage ( $title = '', $text = '', $type = 'OK') {
+	public function addFlashMessage ( $title = '', $text = '', $type = 'OK') {
 		
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 		$controllerContext = $objectManager->get('TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext');
@@ -257,7 +257,7 @@ class AnyHelper {
 		);
 	}
 	
-	function renderFlashMessages () {
+	public function renderFlashMessages () {
 		
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 		$controllerContext = $objectManager->get('TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext');
@@ -270,18 +270,18 @@ class AnyHelper {
 	/* --------------------------------------------------------------- */
 	
 
-	function getSuffix ( $file ) {
+	public function getSuffix ( $file ) {
 		if (!$file) return false;
 		return strtolower(pathinfo($file, PATHINFO_EXTENSION));
 	}
 	
-	function cloneArray( $arr ) {
+	public function cloneArray( $arr ) {
 		$ret = array();
 		foreach ($arr as $k=>$v) $ret[$k] = $v;
 		return $ret;
 	}
 	
-	function cleanIntList ( $str='', $returnArray = null ) {
+	public function cleanIntList ( $str='', $returnArray = null ) {
 		$is_arr = is_array($str);
 		if (trim($str) == '') return (($returnArray == null && !$is_arr) || $returnArr === false) ? '' : array();
 		if ($is_arr) $str = join(',', $str);
@@ -290,7 +290,7 @@ class AnyHelper {
 		return explode(',', $str);
 	}
 			
-	function get_obj_by_attribute ( &$data, $key, $val = false, $retArr = false ) {
+	public function get_obj_by_attribute ( &$data, $key, $val = false, $retArr = false ) {
 		$ref = array();
 		foreach ($data as $k=>$v) {
 			if ($val === false) {
@@ -307,8 +307,23 @@ class AnyHelper {
 		return $ref;
 	}
 	
-	function html2plaintext ( $html ) {
+	public function html2plaintext ( $html ) {
 		return strip_tags($html);
+	}
+	
+	public function encryptEmail( $str ) {
+		if (!$str) return '';
+		$parts = explode('@', $str);
+		$domain_parts = explode('.', $parts[1]);
+		
+		$name = $parts[0];
+		$toplevel = array_pop($domain_parts);
+		$domain = join('.', $domain_parts);
+
+		$lenName = strlen($name);
+		$lenDomain = strlen($domain);
+		
+		return substr($name, 0, min(3, $lenName)).str_repeat('*', max(0,$lenName-3)).'@'.substr($domain, 0, min($lenDomain,4)).str_repeat('*', max(0,$lenDomain-4)).'.'.$toplevel;
 	}
 	
 	// --------------------------------------------------------------------------------------------------------------------
