@@ -286,7 +286,6 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ($_GP['validate']) {
 
 			$user = $this->frontendUserRepository->findByCustomField( $_GP['email'], $this->settings['usernameFields'] );
-//			\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump( $user );
 
 			if (!is_object($user)) {
 
@@ -401,8 +400,7 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					
 					$user = $this->frontendUserService->validate($user['email'] ? $user['email'] : $user['username'], $old_pw);
 					
-					if (is_object($user)) {
-			
+					if (is_object($user)) {			
 						$this->frontendUserService->updateUserPassword($user->getUid(), $new_pw);
 						$view['mode'] = 'password_changed';
 						if ($pid = $this->settings['changePasswordRedirectPid']) {

@@ -101,6 +101,10 @@ plugin.tx_nnfelogin {
 		callDefaultActionIfActionCantBeResolved = 1
 	}
 	
+	features {
+		skipDefaultArguments = 1
+	}
+	
 	_CSS_DEFAULT_STYLE >
 	
 }

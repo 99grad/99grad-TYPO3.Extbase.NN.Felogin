@@ -1,7 +1,7 @@
 {namespace VH=Nng\Nnfelogin\ViewHelpers}
 
 <div id="nnfelogin-{uniqueId}" class="nnfelogin login">
-	<f:form method="post" controller="Main" action="showLoginForm" fieldNamePrefix="{_GPprefix}">
+	<f:form method="post" controller="Main" action="showLoginForm" fieldNamePrefix="{_GPprefix}" noCache="1">
 		
 		<f:comment>
 			<f:security.ifAuthenticated>... ging bei 1&1 nicht! ...</f:security.ifAuthenticated>

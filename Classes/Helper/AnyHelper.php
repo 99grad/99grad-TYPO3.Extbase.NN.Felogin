@@ -341,6 +341,7 @@ class AnyHelper {
 
 		$link = $pi->pi_getPageLink($pid, '', $vars);
 		$link = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($link); 
+
 		header('Location: '.$link); 
 		exit(); 
 	}
