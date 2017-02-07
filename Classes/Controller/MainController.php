@@ -114,14 +114,18 @@ class MainController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->pathPartials = $partials;
 		
 		// JS-Dateien einbinden
-		foreach ($templateSettings['includeJS.'] as $k=>$v) {
-			$GLOBALS['TSFE']->additionalHeaderData['nnfelogin'.md5($v)] = '<script type="text/javascript" src="'.$v.'"></script>';
-		}
-
-		foreach ($templateSettings['includeCSS.'] as $k=>$v) {
-			$GLOBALS['TSFE']->additionalHeaderData['nnfelogin'.md5($v)] = '<link rel="stylesheet" type="text/css" media="all" href="'.$v.'" />';
+		if ($templateSettings['includeJS.']) { 
+			foreach ($templateSettings['includeJS.'] as $k=>$v) {
+				$GLOBALS['TSFE']->additionalHeaderData['nnfelogin'.md5($v)] = '<script type="text/javascript" src="'.$v.'"></script>';
+			}
 		}
 		
+		if ($templateSettings['includeCSS.']) {
+			foreach ($templateSettings['includeCSS.'] as $k=>$v) {
+				$GLOBALS['TSFE']->additionalHeaderData['nnfelogin'.md5($v)] = '<link rel="stylesheet" type="text/css" media="all" href="'.$v.'" />';
+			}
+		}
+				
 		$this->viewVars = array(
 			'settings'			=> $this->settings,
 			'_GP'				=> $this->_GP,
