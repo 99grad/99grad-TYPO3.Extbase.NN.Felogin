@@ -3,7 +3,7 @@
 ## include js
 ## ----------------------------------------------------------------------------
 
-page.includeJSlibs {
+page.includeJSLibs {
 	
 }
 
