@@ -267,7 +267,13 @@ class FrontendUserService implements \TYPO3\CMS\Core\SingletonInterface{
 			}
 		}
 	
-		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $uid, array('password' => $GLOBALS['TYPO3_DB']->quoteStr($saltedPassword, 'fe_users') ));
+		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			'fe_users', 'uid=' . $uid, 
+			array(
+				'password' 	=> $GLOBALS['TYPO3_DB']->quoteStr($saltedPassword, 'fe_users'),
+				'pwchanged' => time()
+			));
+			
 		return $saltedPassword;
 	}
 	

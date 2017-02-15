@@ -38,8 +38,7 @@ plugin.tx_nnfelogin {
 		}
 		
 		# Diese Felder werden als alternative User-Name verwendet
-		usernameFields = username, email, member_uid
-		
+		usernameFields = username, email, member_uid		
 	}
 
 	

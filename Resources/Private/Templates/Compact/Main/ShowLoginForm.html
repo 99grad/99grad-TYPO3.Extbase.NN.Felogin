@@ -7,7 +7,7 @@
 	<f:form method="post" controller="Main" action="showLoginForm" fieldNamePrefix="{_GPprefix}" noCache="1">
 		
 		<div class="row">
-			<div class="col-sm-12 col-lg-8">
+			<div class="col-sm-12 col-lg-9">
 		
 				<f:comment>
 					<f:security.ifAuthenticated>... ging bei 1&1 nicht! ...</f:security.ifAuthenticated>
@@ -18,32 +18,53 @@
 					
 						<div class="clearfix marg-1 rahmen rahmen-100 layout-1">
 							<div class="tx-felogin-pi1">
-							
 								<div class="message">
-									<h1>Hallo, {feUser.first_name} {feUser.last_name}!</h1>
+									<h2>Hallo, {feUser.title} {feUser.first_name} {feUser.last_name}!</h2>
 									<f:format.html>Sie sind zur Zeit auf der Webseite eingeloggt und haben Zugriff auf die Inhalte für Mitglieder.</f:format.html>
 								</div>
 
-								<div class="field row clearfix">
-									<f:form.hidden name="logout" value="1" />
-									<div class="col-sm-{f:if(condition:settings.loginRedirectPid,then:'6',else:'12')} gutter-sm-right-5 pad-sm-bottom-10">
-										<input type="submit" name="submit" class="col-sm-12 form-control left btn-logout" value="Abmelden" />
-									</div>
-									<f:comment>
-										<f:if condition="{settings.loginRedirectPid}">
+								<f:if condition="{feUser.pwchanged}==0">
+								
+									<f:then>
+										<div class="alert alert-warning">
+											<div class="form-group">
+												<h4>Ihr Passwort ist unsicher!</h4>
+												<p>Sie verwenden ein unsicheres Passwort.<br />
+													Bitte ändern Sie jetzt ihr Passwort!<br />
+													Überprüfen Sie bitte auch, ob Ihre <b>E-Mail</b> aktuell ist
+												</p>
+											</div>
+																						
+											<div class="row">
+												<div class="col-sm-6 text-center gutter-sm-left-5">
+													<f:link.page pageUid="165" class="col-sm-12 form-control btn btn-secondary">
+														E-Mail prüfen
+													</f:link.page>
+												</div>
+												<div class="col-sm-6 text-center gutter-sm-left-5">
+													<f:link.page pageUid="184" class="col-sm-12 form-control btn-loginredirect btn btn-secondary">
+														Passwort ändern
+													</f:link.page>
+												</div>
+											</div>
+										</div>
+									</f:then>
+									
+									<f:else>
+										<div class="field row clearfix">
+											<f:form.hidden name="logout" value="1" />
+											<div class="col-sm-{f:if(condition:settings.loginRedirectPid,then:'6',else:'12')} gutter-sm-right-5 pad-sm-bottom-10">
+												<input type="submit" name="submit" class="col-sm-12 form-control left btn-logout" value="Abmelden" />
+											</div>
 											<div class="col-sm-6 text-center gutter-sm-left-5">
-												<f:link.page pageUid="{settings.loginRedirectPid}" class="col-sm-12 form-control btn-loginredirect btn-">
+												<f:link.page pageUid="165" class="col-sm-12 form-control btn-loginredirect btn-primary">
 													Meine Daten
 												</f:link.page>
 											</div>
-										</f:if>
-									</f:comment>
-									<div class="col-sm-6 text-center gutter-sm-left-5">
-										<f:link.page pageUid="165" class="col-sm-12 form-control btn-loginredirect btn-primary">
-											Meine Daten
-										</f:link.page>
-									</div>
-								</div>
+										</div>
+									</f:else>
+								</f:if>
+
 							</div>
 						</div>
 					</f:then>
