@@ -32,7 +32,7 @@ plugin.tx_nnfelogin {
 		
 		forgotPassword {
 			subject = Passwort zurücksetzen
-			fromEmail = info@dgim.de
+			fromEmail = mitglieder@dgim.de
 			fromName = DGIM
 			returnPid = 164
 		}
